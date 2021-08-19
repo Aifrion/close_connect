@@ -9,13 +9,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
-            body{
-                padding: 5% 20%;
+            form{
+                padding: 2% 20%;
+            }
+            .alert{
+                width: 30%;
+                padding: 5px 8px;
+                margin: 2% 0 0 17.7%
+            }
+            .messages li{
+                list-style-type: none;
+                font-size: 0.8em;
             }
         </style>
     </head>
     <body>
-        <form action="/check_admin" method="POST">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{message}} </li>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="/sign_in" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email address</label>
@@ -27,9 +45,10 @@
             </div>
            
             <button type="submit">Sign In</button>
+            <a href="/register">Don't have an account? Register.</a>
         </form>
         
-        <a href="/create">Don't have an account? Register.</a>
+        
         
     </body>
 </html>

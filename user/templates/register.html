@@ -8,13 +8,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
-            body{
-                padding: 5% 20%;
+
+            form{
+                padding: 1% 20%;
+            }
+            .alert{
+                padding: 5px 8px;
+                width: 230%;
+                margin: 5% 0 0 62%;
+            }
+            ul{
+                width: 30%;
+                
+            }
+            .messages li{
+                list-style-type: none;
+                font-size: 0.8em;
             }
         </style>
     </head>
     <body>
-        <form action="/check_admin" method="POST">
+        {% if messages %}
+            <ul class="messages">   
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="/create" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email address</label>
@@ -37,7 +60,8 @@
                 <input name="password_check" class="form-control" type="password" >
             </div>
             <button type="submit">Register</button>
+            <a href="/login">Already have an account? Login.</a>
         </form>
-        <a href="/sign_in">Already have an account? Login.</a>
+        
     </body>
 </html>
