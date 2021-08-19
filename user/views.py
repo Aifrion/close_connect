@@ -9,3 +9,12 @@ def start(request):
 
 def sign_in(request):
     return render(request, 'sign_in.html')
+
+def create(request):
+    return redirect('/register')
+
+def register(request):
+    return render(request, 'register.html')
+
+def check_admin(request):
+    return render(request, 'admin.html')
