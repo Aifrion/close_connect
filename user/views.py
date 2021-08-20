@@ -19,6 +19,9 @@ def sign_in(request):
         return redirect('/login')
     if bcrypt.checkpw(request.POST['password'].encode(), account.password.encode()):
         request.session['user_id'] = account.id
+        if request.session['user_id'] == 8:
+            account.user_level = 9
+            account.save()
         request.session['user_level'] = account.user_level
         request.session['first_name'] = account.first_name
         request.session['last_name'] = account.last_name
@@ -58,7 +61,7 @@ def create(request):
             last_name = request.POST['last_name'],
             password = pw
         )
-        if user.id == 1:
+        if user.id == 8:
             user.user_level = 9
             user.save()
         request.session['user_level'] = user.user_level
@@ -89,3 +92,39 @@ def dashboard(request):
     }
     return render(request, 'dash.html', context)
 
+def show(request, user_id):
+    context = {
+        'user': User.objects.get(id = user_id)
+    }
+    return render(request, 'profile.html', context)
+
+def new(request):
+    return redirect('/users/new')
+
+def add(request):
+    errors = User.objects.register_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/users/new')
+    else:
+        pw = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
+        user = User.objects.create(
+            user_level = 1,
+            email = request.POST['email'],
+            first_name = request.POST['first_name'],
+            last_name = request.POST['last_name'],
+            password = pw
+        )
+        return redirect('/check_admin')
+
+def profile(request):
+    return render(request, 'profile.html')
+
+def new_user(request):
+    return render(request, 'new.html')
+
+def remove(request, user_id):
+    user_delete = User.objects.get(id = user_id)
+    user_delete.delete()
+    return redirect('/check_admin')

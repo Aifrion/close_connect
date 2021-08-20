@@ -8,12 +8,6 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <style>
-            .nav-link{
-                text-decoration: none;
-                color: rgba(0,0,0,.9);
-            }
-        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,32 +30,8 @@
                 </form>
             </div>
         </nav>
-        <h1>Hi {{user.first_name}}</h1>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Created at</th>
-                <th scope="col">User level</th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                    <tr>
-                        <th scope="row">{{user.id}}</th>
-                        <td><a href="/users/show/{{user.id}}">{{user.first_name}} {{user.last_name}}</a></td>
-                        <td>{{user.email}}</td>
-                        <td>{{user.created_at|date:"SHORT_DATE_FORMAT"}}</td>
-                        {% if user.user_level == 9 %}
-                            <td>Admin</td>
-                        {% else %}
-                            <td>Normal</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-          </table>
+        <h1>Profile of user {{user.id}}</h1>
+        
+        
     </body>
 </html>
