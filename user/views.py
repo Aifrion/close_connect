@@ -73,7 +73,7 @@ def register(request):
 
 def check_admin(request):
     level = request.session['user_level']
-    if level == 9:
+    if level > 5:
         return redirect('/dashboard/admin')
     else:
         return redirect('/dashboard')
@@ -128,3 +128,77 @@ def remove(request, user_id):
     user_delete = User.objects.get(id = user_id)
     user_delete.delete()
     return redirect('/check_admin')
+
+def admin_update_info(request, user_id):
+    errors = User.objects.info_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect(f'/users/edit/{user_id}')
+    user = User.objects.get(id = user_id)
+    user.email = request.POST['email']
+    user.first_name = request.POST['first_name']
+    user.last_name = request.POST['last_name']
+    user.user_level = request.POST['user_level']
+    user.save()
+    return redirect('/dashboard/admin')
+
+def admin_update_password(request, user_id):
+    pw = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
+    errors = User.objects.password_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect(f'/users/edit/{user_id}')
+    user = User.objects.get(id = user_id)
+    user.password = pw
+    user.save()
+    return redirect('/dashboard/admin')
+
+def admin_edit(request, user_id):
+    context = {
+        'user': User.objects.get(id = user_id)
+    }
+    return render(request, 'admin_edit.html', context)
+
+def update_info(request):
+    errors = User.objects.info_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/users/edit')
+    user = User.objects.get(id = request.session['user_id'])
+    user.email = request.POST['email']
+    user.first_name = request.POST['first_name']
+    user.last_name = request.POST['last_name']
+    user.save()
+    return redirect('/users/edit')
+
+def update_password(request):
+    errors = User.objects.password_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/users/edit')
+    user = User.objects.get(id = request.session['user_id'])
+    pw = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
+    user.password = pw
+    user.save()
+    return redirect('/users/edit')
+
+def update_description(request):
+    errors = User.objects.description_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/users/edit')
+    user = User.objects.get(id = request.session['user_id'])
+    user.description = request.POST['description']
+    user.save()
+    return redirect('/users/edit')
+
+def edit(request):
+    context = {
+        'user': User.objects.get(id=request.session['user_id'])
+    }
+    return render(request, 'edit.html', context)

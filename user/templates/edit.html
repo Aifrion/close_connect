@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -7,17 +11,21 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            .alert{
+                width: 30%;
+                padding: 5px 8px;
+                margin: 2% 0;
+            }
+            .messages li{
+                list-style-type: none;
+                font-size: 0.8em;
+            }
+            form{
+                border: 1px solid black;
+            }
+        </style>
     </head>
-    <style>
-        .nav-link{
-                text-decoration: none;
-                color: rgba(0,0,0,.9);
-            }
-        .heading{
-                display: flex;
-                justify-content: space-between;
-            }
-    </style>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" >Test App</a>
@@ -38,14 +46,8 @@
                 </form>
             </div>
         </nav>
-        <div class="heading">
-            <p>Add a new user</p>
-            <form action="/dashboard/admin" method="POST">
-                {% csrf_token %}
-                <input type="hidden">
-                <button type="submit">Return to dashboard</button>
-            </form>
-        </div> 
+
+        <h4>Edit Profile</h4>
         {% if messages %}
             <ul class="messages">   
                 {% for message in messages %}
@@ -55,32 +57,43 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <form action="/add" method="POST">
+        <form action="/update_info" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input name="email" class="form-control" type="text">
+                <input type="text" class="form-control" name="email" value="{{user.email}}" >
             </div>
             <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input name="first_name" class="form-control" type="text">
+                <label for="first_name">First name</label>
+                <input type="text" class="form-control" name="first_name" value="{{user.first_name}}">
             </div>
             <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input name="last_name" class="form-control" type="text">
+                <label for="last_name">Last name</label>
+                <input type="text" class="form-control" name="last_name" value="{{user.last_name}}">
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input name="password" class="form-control" type="password">
-            </div>
-            <div class="form-group">
-                <label for="password_check">Confirm Password</label>
-                <input name="password_check" class="form-control" type="password" >
-            </div>
-            <button type="submit">Create</button>
-           
+            <button type="submit">save</button>
         </form>
         
-        
+        <form action="/update_password" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <div class="form-group">
+                <label for="password_check">Confirm password</label>
+                <input type="password" class="form-control" name="password_check">
+            </div>
+            <button type="submit">Update password</button>
+        </form>
+
+        <form action="/update_description" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="description">Edit description</label>
+                <textarea class="form-control" name="description" rows="3"></textarea>
+            </div>
+            <button type="submit">save</button>
+        </form>
     </body>
 </html>

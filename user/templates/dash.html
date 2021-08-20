@@ -28,7 +28,7 @@
                         <a class="nav-link" href="/check_admin">Dashboard <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Profile <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/users/edit">Profile <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -54,7 +54,7 @@
                         <td><a href="/users/show/{{user.id}}">{{user.first_name}} {{user.last_name}}</a></td>
                         <td>{{user.email}}</td>
                         <td>{{user.created_at|date:"SHORT_DATE_FORMAT"}}</td>
-                        {% if user.user_level == 9 %}
+                        {% if user.user_level > 5 %}
                             <td>Admin</td>
                         {% else %}
                             <td>Normal</td>
