@@ -30,8 +30,34 @@
                 </form>
             </div>
         </nav>
-        <h1>Profile of user {{user.id}}</h1>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{message}} </li>
+                </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h4>{{user.first_name}} {{user.last_name}}</h4>
+        <p>User ID: #{{user.id}}</p>
+        <p>Email address: {{user.email}}</p>
         <p>Description: {{user.description}}</p>
-        
+        <form action="/add_message/{{user.id}}/{{account.id}}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <h4><label for="content">Leave a message for {{user.first_name}}</label></h4>
+                <textarea class="form-control" name="content" rows="3"></textarea>
+            </div>
+            <button type="submit">Post</button>
+        </form>
+        {% for message in all_messages %}
+            <div class="message">
+                <p> <a href="">{{message.poster.first_name}} {{message.poster.last_name}}</a></p>
+                <textarea class="form-control" rows="3">{{message.content}}</textarea>
+            </div>
+        {% endfor %}        
     </body>
 </html>

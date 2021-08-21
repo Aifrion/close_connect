@@ -1,5 +1,8 @@
 from django.db import models
 import re
+
+from django.db.models.deletion import DO_NOTHING
+from django.db.models.fields.related import create_many_to_many_intermediary_model
 # Create your models here.
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class UserManager(models.Manager):
@@ -50,4 +53,33 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
+
+class message_comment_manager(models.Manager):
+    def message_validator(self, postData):
+        error = {}
+        if len(postData['content'])<1:
+            error["content"]="Please enter a message"
+        return error
+    
+    def comment_validator(self, postData):
+        error = {}
+        if len(postData['comment'])<1:
+            error["comment"]="Please enter a comment"
+        return error
+
+class Message(models.Model):
+    content = models.TextField()
+    poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "messages")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = message_comment_manager()
+
+class Comment(models.Model):
+    content = models.TextField()
+    comment_message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="comments")
+    poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = message_comment_manager()
 

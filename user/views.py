@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import bcrypt
-from .models import User
+from .models import User, Message, Comment
 # Create your views here.
 def home(request):
     return redirect('/')
@@ -19,7 +19,7 @@ def sign_in(request):
         return redirect('/login')
     if bcrypt.checkpw(request.POST['password'].encode(), account.password.encode()):
         request.session['user_id'] = account.id
-        if request.session['user_id'] == 8:
+        if request.session['user_id'] == 1:
             account.user_level = 9
             account.save()
         request.session['user_level'] = account.user_level
@@ -61,7 +61,7 @@ def create(request):
             last_name = request.POST['last_name'],
             password = pw
         )
-        if user.id == 8:
+        if user.id == 1:
             user.user_level = 9
             user.save()
         request.session['user_level'] = user.user_level
@@ -93,10 +93,29 @@ def dashboard(request):
     return render(request, 'dash.html', context)
 
 def show(request, user_id):
+    user = User.objects.get(id = user_id)
+    account = User.objects.get(id = request.session['user_id'])
     context = {
-        'user': User.objects.get(id = user_id)
+        'user': user,
+        'account': account,
+        'all_messages': user.messages.all()
     }
     return render(request, 'profile.html', context)
+
+
+def add_message(request,user_id, account_id):
+    errors = Message.objects.message_validator(request.POST)
+    if len(errors)>0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect(f'/users/show/{user_id}')
+    Message.objects.create(
+        content = request.POST['content'], 
+        poster = User.objects.get(id = account_id),
+        receiver = User.objects.get(id = user_id) 
+        )
+    return redirect(f'/users/show/{user_id}')
+
 
 def new(request):
     return redirect('/users/new')
