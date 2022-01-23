@@ -264,8 +264,14 @@ def edit(request):
     return render(request, 'edit.html', context)
 
 
-def chat_room(request, room_id):
+def chat_room(request, account_user_id, user_id):
+    if account_user_id < user_id:
+        room_id = f'{account_user_id}{user_id}chat'
+    else:
+        room_id = f'{user_id}{account_user_id}chat'
     context = {
+        'account_user_id': account_user_id,
+        'user_id': user_id,
         'room_id': room_id
     }
     return render(request, 'chat_room.html', context)
