@@ -262,3 +262,10 @@ def edit(request):
         'user': User.objects.get(id=request.session['user_id'])
     }
     return render(request, 'edit.html', context)
+
+
+def chat_room(request, room_id):
+    context = {
+        'room_id': room_id
+    }
+    return render(request, 'chat_room.html', context)

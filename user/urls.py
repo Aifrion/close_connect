@@ -26,5 +26,6 @@ urlpatterns = [
     path('users/new', views.new_user),
     path('users/edit/<int:user_id>', views.admin_edit),
     path('update_info/<int:user_id>', views.admin_update_info),
-    path('update_password/<int:user_id>', views.admin_update_password)
+    path('update_password/<int:user_id>', views.admin_update_password),
+    path('users/<str:room_id>/', views.chat_room, name='room')
 ]

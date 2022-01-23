@@ -77,7 +77,7 @@
             {% else %}
                 <td>Normal</td>
             {% endif %}
-            <td><a href="">Chat</a></td>
+            <td><a href="/users/BigChatRoom">Chat</a></td>
             {% if account_user.user_level > 5 %}
                 <td><a href="/users/edit/{{ user.id }}">Edit</a> | <a href="/remove/{{ user.id }}">Remove</a></td>
             {% endif %}
@@ -85,18 +85,6 @@
     {% endfor %}
     </tbody>
 </table>
-<script>
-    document.querySelector('#room-name-input').focus();
-    document.querySelector('#room-name-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#room-name-submit').click();
-        }
-    };
 
-    document.querySelector('#room-name-submit').onclick = function (e) {
-        var roomName = document.querySelector('#room-name-input').value;
-        window.location.pathname = '/chat/' + roomName + '/';
-    };
-</script>
 </body>
 </html>
