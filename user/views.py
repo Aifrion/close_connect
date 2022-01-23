@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import bcrypt
-from .models import User, Message, Comment
+from .models import User
 
 
 # Create your views here.
@@ -92,15 +92,15 @@ def check_admin(request):
 
 def admin_dashboard(request):
     context = {
-        'user': User.objects.get(id=request.session['user_id']),
+        'account_user': User.objects.get(id=request.session['user_id']),
         'users': User.objects.all()
     }
-    return render(request, 'admin_dash.html', context)
+    return render(request, 'dash.html', context)
 
 
 def dashboard(request):
     context = {
-        'user': User.objects.get(id=request.session['user_id']),
+        'account_user': User.objects.get(id=request.session['user_id']),
         'users': User.objects.all()
     }
     return render(request, 'dash.html', context)
@@ -112,39 +112,39 @@ def show(request, user_id):
     context = {
         'user': user,
         'account': account,
-        'all_messages': user.messages.all(),
-        'all_comments': user.user_comments.all()
+        # 'all_messages': user.messages.all(),
+        # 'all_comments': user.user_comments.all()
     }
     return render(request, 'profile.html', context)
 
 
-def add_message(request, user_id, account_id):
-    errors = Message.objects.message_validator(request.POST)
-    if len(errors) > 0:
-        for key, value in errors.items():
-            messages.error(request, value)
-        return redirect(f'/users/show/{user_id}')
-    Message.objects.create(
-        content=request.POST['content'],
-        poster=User.objects.get(id=account_id),
-        receiver=User.objects.get(id=user_id)
-    )
-    return redirect(f'/users/show/{user_id}')
-
-
-def comment(request, user_id, message_id):
-    errors = Message.objects.comment_validator(request.POST)
-    if len(errors) > 0:
-        for key, value in errors.items():
-            messages.error(request, value)
-        return redirect(f'users/show/{user_id}')
-    Comment.objects.create(
-        content=request.POST['comment'],
-        comment_message=Message.objects.get(id=message_id),
-        comment_user=User.objects.get(id=user_id),
-        poster=User.objects.get(id=request.session['user_id'])
-    )
-    return redirect(f'users/show/{user_id}')
+# def add_message(request, user_id, account_id):
+#     errors = Message.objects.message_validator(request.POST)
+#     if len(errors) > 0:
+#         for key, value in errors.items():
+#             messages.error(request, value)
+#         return redirect(f'/users/show/{user_id}')
+#     Message.objects.create(
+#         content=request.POST['content'],
+#         poster=User.objects.get(id=account_id),
+#         receiver=User.objects.get(id=user_id)
+#     )
+#     return redirect(f'/users/show/{user_id}')
+#
+#
+# def comment(request, user_id, message_id):
+#     errors = Message.objects.comment_validator(request.POST)
+#     if len(errors) > 0:
+#         for key, value in errors.items():
+#             messages.error(request, value)
+#         return redirect(f'users/show/{user_id}')
+#     Comment.objects.create(
+#         content=request.POST['comment'],
+#         comment_message=Message.objects.get(id=message_id),
+#         comment_user=User.objects.get(id=user_id),
+#         poster=User.objects.get(id=request.session['user_id'])
+#     )
+#     return redirect(f'users/show/{user_id}')
 
 
 def new(request):

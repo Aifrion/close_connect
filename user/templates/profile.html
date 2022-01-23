@@ -59,33 +59,7 @@
         <p>User ID: #{{user.id}}</p>
         <p>Email address: {{user.email}}</p>
         <p>Description: {{user.description}}</p>
-        <form action="/add_message/{{user.id}}/{{account.id}}" class="message" method="POST">
-            {% csrf_token %}
-            <div class="form-group ">
-                <h4><label for="content">Leave a message for {{user.first_name}}</label></h4>
-                <textarea class="form-control" name="content" rows="3"></textarea>
-            </div>
-            <button type="submit">Post</button>
-        </form>
-        {% for message in all_messages %}
-            <div class="message">
-                <p> {{message.get_date}} <a href="/users/show/{{message.poster.id}}">{{message.poster.first_name}} {{message.poster.last_name}}</a></p>
-                <textarea class="form-control" rows="3">{{message.content}}</textarea>
-            </div>x
-            <h6>Comments</h6>
-            {% for comment in all_comments %}
-                {% if comment.comment_message.id == message.id %}
-                    <textarea class="form-control" name="comment" rows= "2">{{comment.content}}</textarea>
-                {% endif %} 
-                <textarea class="form-control" name="comment" rows= "2">{{comment.content}}</textarea>
-            {% endfor %}
-            <div class="comment">
-                <form action="/comment/{{user.id}}/{{message.id}}" method="POST">
-                    {% csrf_token %}
-                    <textarea class="form-control" name="comment" placeholder="Write a comment" rows= "2"></textarea>
-                    <button type="submit">Post</button>
-                </form>
-            </div>
-        {% endfor %}        
+
+
     </body>
 </html>

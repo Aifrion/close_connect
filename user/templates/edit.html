@@ -91,7 +91,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="description">Edit description</label>
-                <textarea class="form-control" name="description" rows="3"></textarea>
+                <textarea class="form-control" name="description" rows="3">{{user.description}}</textarea>
             </div>
             <button type="submit">save</button>
         </form>
