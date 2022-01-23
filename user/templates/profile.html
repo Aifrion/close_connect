@@ -8,6 +8,20 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            
+            .message{
+                width: 50%;
+                margin: 0 auto;
+            }
+            .comment{
+                width: 40%;
+                margin: 1% 35%;
+            }
+            h6{
+                margin: 0 35%;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -45,9 +59,9 @@
         <p>User ID: #{{user.id}}</p>
         <p>Email address: {{user.email}}</p>
         <p>Description: {{user.description}}</p>
-        <form action="/add_message/{{user.id}}/{{account.id}}" method="POST">
+        <form action="/add_message/{{user.id}}/{{account.id}}" class="message" method="POST">
             {% csrf_token %}
-            <div class="form-group">
+            <div class="form-group ">
                 <h4><label for="content">Leave a message for {{user.first_name}}</label></h4>
                 <textarea class="form-control" name="content" rows="3"></textarea>
             </div>
@@ -55,8 +69,22 @@
         </form>
         {% for message in all_messages %}
             <div class="message">
-                <p> <a href="">{{message.poster.first_name}} {{message.poster.last_name}}</a></p>
+                <p> {{message.get_date}} <a href="/users/show/{{message.poster.id}}">{{message.poster.first_name}} {{message.poster.last_name}}</a></p>
                 <textarea class="form-control" rows="3">{{message.content}}</textarea>
+            </div>x
+            <h6>Comments</h6>
+            {% for comment in all_comments %}
+                {% if comment.comment_message.id == message.id %}
+                    <textarea class="form-control" name="comment" rows= "2">{{comment.content}}</textarea>
+                {% endif %} 
+                <textarea class="form-control" name="comment" rows= "2">{{comment.content}}</textarea>
+            {% endfor %}
+            <div class="comment">
+                <form action="/comment/{{user.id}}/{{message.id}}" method="POST">
+                    {% csrf_token %}
+                    <textarea class="form-control" name="comment" placeholder="Write a comment" rows= "2"></textarea>
+                    <button type="submit">Post</button>
+                </form>
             </div>
         {% endfor %}        
     </body>

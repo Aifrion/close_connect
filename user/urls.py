@@ -15,7 +15,7 @@ urlpatterns = [
     path('dashboard/admin', views.admin_dashboard),
     path('users/show/<int:user_id>', views.show),
     path('add_message/<int:user_id>/<int:account_id>', views.add_message),
-    # path('comment/<int:user_id>',views.comment),
+    path('comment/<int:user_id>/<int:message_id>', views.comment),
     path('update_info', views.update_info),
     path('update_password', views.update_password),
     path('update_description', views.update_description),
