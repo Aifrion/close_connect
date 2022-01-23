@@ -6,10 +6,19 @@
     <title>Chat Room</title>
 </head>
 <body>
-<textarea id="chat-log" cols="100" rows="20">asdf</textarea><br>
-  {% for message in messages %}
-       <p>h</p>
-   {% endfor %}
+<textarea id="chat-log" cols="100" rows="20">
+    {% for message in messages %}
+        {{ message.sender.first_name}}: {{ message.content }}
+    {% endfor %}
+</textarea><br>
+{#<div id="chat-log">#}
+{#    <ul>#}
+{#        {% for message in messages %}#}
+{#            <li>{{ message.sender.first_name }}: {{ message.content }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#</div>#}
+
 <input id="chat-message-input" type="text" size="100"><br>
 <input id="chat-message-submit" type="button" value="Send">
 {{ room_id|json_script:"room-name" }}
@@ -33,6 +42,7 @@
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         document.querySelector('#chat-log').value += (data.message + '\n');
+
     };
 
     chatSocket.onclose = function (e) {

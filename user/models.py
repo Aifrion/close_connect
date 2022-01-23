@@ -69,7 +69,7 @@ class Chat(models.Model):
 
 class Message(models.Model):
     content = models.CharField(max_length=10000, null=True)
-    sender = models.CharField(max_length=50, null=True)
+    sender = models.ForeignKey(User, related_name="message_sends", on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     chat_room = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE, null=True)
