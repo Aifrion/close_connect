@@ -61,14 +61,15 @@ class User(models.Model):
 
 
 class Chat(models.Model):
-    room_id = models.CharField(max_length=50)
-    messengers = models.ManyToManyField(User, related_name="chatrooms")
+    room_id = models.CharField(max_length=50, null=True)
+    messengers = models.ManyToManyField(User, related_name="chatrooms", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Message(models.Model):
-    content = models.CharField(max_length=10000)
+    content = models.CharField(max_length=10000, null=True)
+    sender = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    chat_room = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
+    chat_room = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE, null=True)

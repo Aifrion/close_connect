@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import bcrypt
-from .models import User
+from .models import User, Chat
 
 
 # Create your views here.
@@ -269,9 +269,20 @@ def chat_room(request, account_user_id, user_id):
         room_id = f'{account_user_id}{user_id}chat'
     else:
         room_id = f'{user_id}{account_user_id}chat'
-    context = {
-        'account_user_id': account_user_id,
-        'user_id': user_id,
-        'room_id': room_id
-    }
+    account_user = User.objects.get(id=account_user_id)
+    account_chats = account_user.chatrooms.all()
+    if len(account_chats) > 0:
+        account_chat = account_chats.filter(room_id=room_id)[0]
+        account_chat_messages = account_chat.messages.all()
+        context = {
+            'account_user_id': account_user_id,
+            'user_id': user_id,
+            'room_id': room_id,
+            'messages': account_chat_messages
+        }
+    else:
+        context = {
+            'account_user_id': account_user_id,
+            'user_id': user_id,
+            'room_id': room_id, }
     return render(request, 'chat_room.html', context)
