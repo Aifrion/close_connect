@@ -1,87 +1,92 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <style>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
 
-            #register_form{
-                padding: 1% 20%;
-            }
-            .alert{
-                padding: 5px 8px;
-                width: 230%;
-                margin: 5% 0 0 62%;
-            }
-            ul{
-                width: 30%;
+        #register_form {
+            padding: 1% 20%;
+        }
 
-            }
-            .messages li{
-                list-style-type: none;
-                font-size: 0.8em;
-            }
-        </style>
-    </head>
-    <body>
+        .alert {
+            padding: 5px 8px;
+            width: 230%;
+            margin: 5% 0 0 62%;
+        }
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" >Test App</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        ul {
+            width: 30%;
+
+        }
+
+        .messages li {
+            list-style-type: none;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <a class="nav-link" href="/login"> Sign in <span class="sr-only">(current)</span></a>
-                </form>
-            </div>
-        </nav>
-
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-danger">
-                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
-                    </div>
-                {% endfor %}
+            <a class="navbar-brand" href="/">Close Connect</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/start"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
-        {% endif %}
-        <form id="register_form" action="/create" method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input name="email" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input name="first_name" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input name="last_name" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input name="password" class="form-control" type="password">
-            </div>
-            <div class="form-group">
-                <label for="password_check">Confirm Password</label>
-                <input name="password_check" class="form-control" type="password" >
-            </div>
+        </div>
+    </div>
+</nav>
 
-            <button type="submit">Register</button>
-            <a href="/login">Already have an account? Login.</a>
-        </form>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            </div>
+        {% endfor %}
+    </ul>
+{% endif %}
+<form id="register_form" action="/create" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input name="email" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input name="first_name" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input name="last_name" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input name="password" class="form-control" type="password">
+    </div>
+    <div class="form-group">
+        <label for="password_check">Confirm Password</label>
+        <input name="password_check" class="form-control" type="password">
+    </div>
+    <button type="submit">Register</button>
+    <a href="/login">Already have an account? Login.</a>
+</form>
 
-    </body>
+</body>
 </html>

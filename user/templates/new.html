@@ -1,86 +1,86 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
-    <style>
-        .nav-link{
-                text-decoration: none;
-                color: rgba(0,0,0,.9);
-            }
-        .heading{
-                display: flex;
-                justify-content: space-between;
-            }
-    </style>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" >Test App</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .nav-link {
+        text-decoration: none;
+        color: rgba(0, 0, 0, .9);
+    }
+
+    .heading {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/check_admin">Dashboard <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/users/edit">Profile <span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <a class="nav-link" href="/logout"> Log out <span class="sr-only">(current)</span></a>
-                </form>
-            </div>
-        </nav>
-        <div class="heading">
-            <p>Add a new user</p>
-            <form action="/dashboard/admin" method="POST">
-                {% csrf_token %}
-                <input type="hidden">
-                <button type="submit">Return to dashboard</button>
-            </form>
-        </div> 
-        {% if messages %}
-            <ul class="messages">   
-                {% for message in messages %}
-                    <div class="alert alert-danger">
-                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
-                    </div>
-                {% endfor %}
+            <a class="navbar-brand" href="/main">Close Connect</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/check_admin">Dashboard </a></li>
+                <li><a href="/users/edit">Profile</a></li>
             </ul>
-        {% endif %}
-        <form action="/add" method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input name="email" class="form-control" type="text">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="heading">
+    <p>Add a new user</p>
+</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
             </div>
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input name="first_name" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input name="last_name" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input name="password" class="form-control" type="password">
-            </div>
-            <div class="form-group">
-                <label for="password_check">Confirm Password</label>
-                <input name="password_check" class="form-control" type="password" >
-            </div>
-            <button type="submit">Create</button>
-           
-        </form>
-        
-        
-    </body>
+        {% endfor %}
+    </ul>
+{% endif %}
+<form action="/add" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input name="email" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input name="first_name" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input name="last_name" class="form-control" type="text">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input name="password" class="form-control" type="password">
+    </div>
+    <div class="form-group">
+        <label for="password_check">Confirm Password</label>
+        <input name="password_check" class="form-control" type="password">
+    </div>
+    <button type="submit">Create</button>
+
+</form>
+
+
+</body>
 </html>

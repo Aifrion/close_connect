@@ -13,8 +13,9 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         .alert {
             width: 30%;
@@ -38,24 +39,25 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Test App</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/check_admin">Dashboard <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/users/edit">Profile <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <a class="nav-link" href="/logout"> Log out <span class="sr-only">(current)</span></a>
-        </form>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/main">Close Connect</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/check_admin">Dashboard </a></li>
+                <li><a href="/users/edit">Profile</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -108,9 +110,9 @@
     <button type="submit">save</button>
 </form>
 {% if user.profile_pic %}
-    <img class="rounded-circle" src="{{ user.profile_pic.url }}" alt="" width="100px">
+    <img class="profile_pic" src="{{ user.profile_pic.url }}" alt="" width="100px">
 {% else %}
-    <img class="rounded-circle" src="/static/images/default_profile.png" alt="" width="100px">
+    <img class="profile_pic" src="/static/images/default_profile.png" alt="" width="100px">
 {% endif %}
 <form action="/update_profile_pic" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
