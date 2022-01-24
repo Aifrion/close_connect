@@ -2,7 +2,6 @@ from django.db import models
 import re
 import _datetime
 from django.db.models.deletion import DO_NOTHING
-from django.db.models.fields.related import create_many_to_many_intermediary_model
 
 # Create your models here.
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -55,6 +54,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=50)
     password = models.CharField(max_length=60)
     description = models.TextField()
+    profile_pic = models.ImageField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()

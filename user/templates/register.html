@@ -19,7 +19,7 @@
             }
             ul{
                 width: 30%;
-                
+
             }
             .messages li{
                 list-style-type: none;
@@ -48,7 +48,7 @@
         </nav>
 
         {% if messages %}
-            <ul class="messages">   
+            <ul class="messages">
                 {% for message in messages %}
                     <div class="alert alert-danger">
                         <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</li>
@@ -78,9 +78,10 @@
                 <label for="password_check">Confirm Password</label>
                 <input name="password_check" class="form-control" type="password" >
             </div>
+
             <button type="submit">Register</button>
             <a href="/login">Already have an account? Login.</a>
         </form>
-        
+
     </body>
 </html>

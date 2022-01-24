@@ -4,24 +4,91 @@
 <head>
     <meta charset="utf-8"/>
     <title>Chat Room</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-{#<textarea id="chat-log" cols="100" rows="20">#}
-{#    {% for message in messages %}#}
-{#        {{ message.sender.first_name }}: {{ message.content }}#}
-{#    {% endfor %}#}
-{#</textarea><br>#}
-<div id="chat-log">
-    <ul id="chat-line">
-        {% for message in messages %}
-            <li>{{ message.sender.first_name }}: {{ message.content }}</li>
-        {% endfor %}
-    </ul>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Test App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/check_admin">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/users/edit">Profile <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <a class="nav-link" href="/logout"> Log out <span class="sr-only">(current)</span></a>
+        </form>
+    </div>
+</nav>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                    <img src="{{ user.profile_pic.url }}" alt="avatar">
+                                </a>
+                                <div class="chat-about">
+                                    <h6 class="m-b-0">{{ user.first_name }} {{ user.last_name }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history" id="chat-box">
+                        <ul class="m-b-0">
+                            {% for message in messages %}
+                                {% if message.sender.id == account_user_id %}
+                                    <li class="clearfix">
+                                        <div class="message-data text-right">
+                                            <span class="message-data-time">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
+                                            <img src="{{ account_user.profile_pic.url }}" alt="avatar">
+                                        </div>
+                                        <div class="message other-message float-right"> {{ message.content }}
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="clearfix">
+                                        <div class="message-data">
+                                            <img src="{{ user.profile_pic.url }}" alt="avatar">
+                                            <span class="message-data-time">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
+                                        </div>
+                                        <div class="message my-message">{{ message.content }}</div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                            <input type="text" class="form-control" id="chat-message-input"
+                                   placeholder="Enter text here...">
+                            <span class="input-group-text"><a href="" id="chat-message-submit">Send</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<input id="chat-message-input" type="text" size="100"><br>
-{#<input id="chat-message-submit" type="button" value="Send">#}
-<a href="" id ="chat-message-submit">Send</a>
 {{ room_id|json_script:"room-name" }}
 {{ account_user_id|json_script:"account-user-id" }}
 {{ user_id|json_script:"user-name-id" }}
@@ -77,6 +144,7 @@
             'account_user_id': accountUserID,
             'user_id': userID
         }));
+
         messageInputDom.value = '';
     };
 </script>

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 import bcrypt
 from .models import User, Chat
+from .forms import UploadFileForm
 
 
 # Create your views here.
@@ -257,9 +258,17 @@ def update_description(request):
     return redirect('/users/edit')
 
 
+def update_profile_pic(request):
+    if request.method == 'POST' and request.FILES['upload']:
+        profile_pic = request.FILES['upload']
+        user = User.objects.get(id=request.session['user_id'])
+        user.profile_pic = profile_pic
+        user.save()
+    return redirect('/users/edit')
+
 def edit(request):
     context = {
-        'user': User.objects.get(id=request.session['user_id'])
+        'user': User.objects.get(id=request.session['user_id']),
     }
     return render(request, 'edit.html', context)
 
@@ -270,6 +279,7 @@ def chat_room(request, account_user_id, user_id):
     else:
         room_id = f'{user_id}{account_user_id}chat'
     account_user = User.objects.get(id=account_user_id)
+    user = User.objects.get(id=user_id)
     account_chats = account_user.chatrooms.all()
     if len(account_chats) > 0 and len(account_chats.filter(room_id=room_id)) != 0:
         account_chat = account_chats.filter(room_id=room_id).first()
@@ -278,13 +288,18 @@ def chat_room(request, account_user_id, user_id):
             'account_user_id': account_user_id,
             'user_id': user_id,
             'room_id': room_id,
-            'messages': account_chat_messages
+            'messages': account_chat_messages,
+            'account_user': account_user,
+            'user': user
         }
     else:
         context = {
             'account_user_id': account_user_id,
             'user_id': user_id,
             'room_id': room_id,
-            'message': ''
+            'message': '',
+            'account_user': account_user,
+            'user': user
+
         }
     return render(request, 'chat_room.html', context)
